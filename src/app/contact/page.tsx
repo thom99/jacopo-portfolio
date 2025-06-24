@@ -29,8 +29,8 @@ export default function ContactPage() {
 
   return (
     <>
-      <Navbar />
- <main className="pt-20 max-w-4xl mx-auto p-6 text-white">
+      {/* <Navbar /> */}
+ <main className="pt-18 max-w-4xl mx-auto p-6 text-black">
     <motion.section
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}

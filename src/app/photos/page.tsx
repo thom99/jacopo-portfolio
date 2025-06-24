@@ -100,10 +100,22 @@
 
 import { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import Navbar from '../components/Navbar';
 
+type CloudinaryImage = {
+  public_id: string;
+  secure_url: string;
+};
+
+type CloudinaryResponse = {
+  success: boolean;
+  resources: CloudinaryImage[];
+  nextCursor: string | null;
+};
+
 export default function PhotosPage() {
+  const [selectedImage, setSelectedImage] = useState<CloudinaryImage | null>(null)
   const [images, setImages] = useState<any[]>([]);
   const [cursor, setCursor] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -138,7 +150,7 @@ export default function PhotosPage() {
 
   return (
     <>
-    <Navbar />
+    {/* <Navbar /> */}
     <motion.div
       className="p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
       initial="hidden"
@@ -157,8 +169,31 @@ export default function PhotosPage() {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.4, ease: 'easeOut' }}
+          onClick={() => setSelectedImage(img)}
         />
       ))}
+
+       <AnimatePresence>
+         {selectedImage && (
+          <motion.div
+            className="fixed inset-0 z-50 bg-black bg-opacity-80 flex items-center justify-center p-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelectedImage(null)}
+          >
+            <motion.img
+              src={selectedImage.secure_url}
+              alt={selectedImage.public_id}
+              initial={{ scale: 0.8 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0.8 }}
+              className="max-w-full max-h-full rounded-lg shadow-lg"
+              onClick={(e) => e.stopPropagation()}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {loading && Array.from({ length: 3 }).map((_, i) => (
         <div
@@ -176,6 +211,7 @@ export default function PhotosPage() {
           ✅ Tutte le foto sono state caricate
         </p>
       )}
+
     </motion.div>
     </>
 
