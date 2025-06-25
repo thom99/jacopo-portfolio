@@ -12,7 +12,11 @@ type CloudinaryImage = {
   secure_url: string;
 };
 
-export default function PhotosPage() {
+type Props = {
+  maxResults: string | undefined;
+};
+
+export default function PhotosPage({ maxResults }: Props) {
   const { inView } = useInView({ triggerOnce: false, threshold: 0.5 });
   const { setImageModalOpen } = useModalStore();
   const ref = React.useRef<HTMLDivElement>(null);
@@ -33,8 +37,8 @@ export default function PhotosPage() {
 
     try {
       const query = cursorParam
-        ? `?resource_type=image&cursor=${cursorParam}`
-        : `?resource_type=image`;
+        ? `?resource_type=image&cursor=${cursorParam}&maxResults=${maxResults}`
+        : `?resource_type=image&maxResults=${maxResults}`;
       const res = await fetch(`/api/gallery${query}`);
       const data = await res.json();
       console.log({ data });

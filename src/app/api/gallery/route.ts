@@ -7,11 +7,15 @@ export async function GET(request: NextRequest) {
   const resourceType = searchParams.get("resource_type") ?? "image";
   const cursor = searchParams.get("cursor") ?? undefined;
 
+  const maxResults = searchParams.get("maxResults") ?? "30";
+
+  console.log({ maxResults });
+
   try {
     const result = await cloudinary.search
       .expression(`resource_type:${resourceType}`)
       .sort_by("created_at", "desc")
-      .max_results(30)
+      .max_results(Number(maxResults))
       .next_cursor(cursor)
       .execute();
 

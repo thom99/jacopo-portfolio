@@ -17,7 +17,7 @@ export default function Home() {
         <p className="mt-2 text-lg text-neutral-600 max-w-xl pb-6 ">
           Scoprite il mio mondo attraverso ritratti, luoghi e luce.
         </p>
-        <PhotosPage />
+        <PhotosPage maxResults={"6"} />
       </main>
     </>
   );
