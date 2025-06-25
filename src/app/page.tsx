@@ -1,3 +1,5 @@
+"use client";
+
 import PhotosPage from "./photos/page";
 
 export default function Home() {
@@ -9,11 +11,11 @@ export default function Home() {
         <p className="pl-4 text-lg leading-relaxed">
           This is the home page. Explore the About Me and Contact pages via the navbar.
         </p> */}
-        <h1 className="pl-4 text-4xl font-serif">
-          I capture what words can't say.
+        <h1 className="text-4xl font-serif">
+          Catturo ciò che le parole non riescono a dire.
         </h1>
-        <p className="pl-4 mt-2 text-lg text-neutral-600 max-w-xl">
-          Discover my world through portraits, places, and light.
+        <p className="mt-2 text-lg text-neutral-600 max-w-xl pb-6 ">
+          Scoprite il mio mondo attraverso ritratti, luoghi e luce.
         </p>
         <PhotosPage />
       </main>

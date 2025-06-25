@@ -45,9 +45,8 @@ export default function VideoGallery() {
 
   return (
     <>
-      {/* <Navbar /> */}
       <motion.div
-        className="columns-1 sm:columns-2 lg:columns-3 gap-4 p-4"
+        className="columns-1 sm:columns-2 lg:columns-3 gap-4"
         initial="hidden"
         animate="visible"
         variants={{
@@ -89,13 +88,6 @@ export default function VideoGallery() {
                 playsInline
                 loop
                 controls
-                // src={selectedVideo.secure_url}
-                // alt={selectedVideo.public_id}
-                // initial={{ scale: 0.8 }}
-                // animate={{ scale: 1 }}
-                // exit={{ scale: 0.8 }}
-                // className="max-w-full max-h-full rounded-lg shadow-lg"
-                // onClick={(e) => e.stopPropagation()}
               />
             </motion.div>
           )}
