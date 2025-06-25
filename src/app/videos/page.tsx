@@ -1,14 +1,13 @@
-'use client';
+"use client";
 
-import { useEffect, useState, useRef } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
-import Navbar from '../components/Navbar';
+import { useEffect, useState, useRef } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { useLockBodyScroll } from "@/hooks/useLayoutEffect";
 
 type CloudinaryVideo = {
   public_id: string;
   secure_url: string;
 };
-
 
 type CloudinaryResponse = {
   success: boolean;
@@ -16,20 +15,25 @@ type CloudinaryResponse = {
   nextCursor: string | null;
 };
 
-
 export default function VideoGallery() {
-  const [selectedVideo, setSelectedVideo] = useState<CloudinaryVideo | null>(null)
+  const [selectedVideo, setSelectedVideo] = useState<CloudinaryVideo | null>(
+    null
+  );
   const [videos, setVideos] = useState<CloudinaryVideo[]>([]);
   const [cursor, setCursor] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
+  useLockBodyScroll(!!selectedVideo);
+
   const fetchVideos = async (cursorParam: string | null = null) => {
     setLoading(true);
-    const query = cursorParam ? `?resource_type=video&cursor=${cursorParam}` : `?resource_type=video`;
+    const query = cursorParam
+      ? `?resource_type=video&cursor=${cursorParam}`
+      : `?resource_type=video`;
     const res = await fetch(`/api/gallery${query}`);
     const data: CloudinaryResponse = await res.json();
     if (data.success) {
-      setVideos(prev => [...prev, ...data.resources]);
+      setVideos((prev) => [...prev, ...data.resources]);
       setCursor(data.nextCursor);
     }
     setLoading(false);
@@ -41,75 +45,94 @@ export default function VideoGallery() {
 
   return (
     <>
-    {/* <Navbar /> */}
-    <motion.div
-      className="columns-1 sm:columns-2 lg:columns-3 gap-4 p-4"
-      initial="hidden"
-      animate="visible"
-      variants={{
-        hidden: {},
-        visible: {
-          transition: {
-            staggerChildren: 0.15,
+      {/* <Navbar /> */}
+      <motion.div
+        className="columns-1 sm:columns-2 lg:columns-3 gap-4 p-4"
+        initial="hidden"
+        animate="visible"
+        variants={{
+          hidden: {},
+          visible: {
+            transition: {
+              staggerChildren: 0.15,
+            },
           },
-        },
-      }}
-    >
-      {videos.map((video, index) => (
-        <VideoCard key={video.public_id} video={video} onClick={() => setSelectedVideo(video)} setSelectedVideo={setSelectedVideo}/>
-      ))}
+        }}
+      >
+        {videos.map((video, index) => (
+          <VideoCard
+            key={video.public_id}
+            video={video}
+            onClick={() => setSelectedVideo(video)}
+            setSelectedVideo={setSelectedVideo}
+          />
+        ))}
 
-       <AnimatePresence>
-         {selectedVideo && (
-          <motion.div
-            className="fixed inset-0 z-50 bg-black bg-opacity-80 flex items-center justify-center p-4"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setSelectedVideo(null)}
-          >
-            <motion.video
-              src={selectedVideo.secure_url}
-              // alt={selectedVideo.public_id}
-              initial={{ scale: 0.8 }}
-              animate={{ scale: 1 }}
-              exit={{ scale: 0.8 }}
-              className="max-w-full max-h-full rounded-lg shadow-lg"
-              onClick={(e) => e.stopPropagation()}
-            />
-          </motion.div>
+        <AnimatePresence>
+          {selectedVideo && (
+            <motion.div
+              className="fixed inset-0 z-50 bg-black bg-opacity-80 flex items-center justify-center p-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSelectedVideo(null)}
+            >
+              <motion.video
+                src={selectedVideo.secure_url}
+                initial={{ scale: 0.8 }}
+                animate={{ scale: 1 }}
+                exit={{ scale: 0.8 }}
+                className="max-w-full max-h-full rounded-lg shadow-lg"
+                onClick={(e) => e.stopPropagation()}
+                autoPlay
+                muted
+                playsInline
+                loop
+                controls
+                // src={selectedVideo.secure_url}
+                // alt={selectedVideo.public_id}
+                // initial={{ scale: 0.8 }}
+                // animate={{ scale: 1 }}
+                // exit={{ scale: 0.8 }}
+                // className="max-w-full max-h-full rounded-lg shadow-lg"
+                // onClick={(e) => e.stopPropagation()}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
+        {cursor && (
+          <div className="col-span-full text-center mt-6">
+            <button
+              onClick={() => fetchVideos(cursor)}
+              disabled={loading}
+              className="bg-white text-black px-4 py-2 rounded-xl hover:bg-neutral-200 transition"
+            >
+              {loading ? "Caricamento..." : "Carica altri"}
+            </button>
+          </div>
         )}
-      </AnimatePresence>
-         {cursor && (
-        <div className="col-span-full text-center mt-6">
-          <button
-            onClick={() => fetchVideos(cursor)}
-            disabled={loading}
-            className="bg-white text-black px-4 py-2 rounded-xl hover:bg-neutral-200 transition"
-          >
-            {loading ? 'Caricamento...' : 'Carica altri'}
-          </button>
-        </div>
-      )}
-    </motion.div>
+      </motion.div>
     </>
-
   );
 }
 
-function VideoCard({video, onClick, setSelectedVideo, }: { video: CloudinaryVideo; onClick: () => void; setSelectedVideo: any}) {
+function VideoCard({
+  video,
+  onClick,
+  setSelectedVideo,
+}: {
+  video: CloudinaryVideo;
+  onClick: () => void;
+  setSelectedVideo: any;
+}) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [loaded, setLoaded] = useState(false);
   const [isAudioOn, setIsAudioOn] = useState(false);
 
-  console.log({video});
-  
- const thumbnailUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/video/upload/so_0/${video.public_id}.jpg`;
+  const thumbnailUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/video/upload/so_0/${video.public_id}.jpg`;
 
-  console.log({thumbnailUrl});
-  
   const toggleAudio = () => {
-    setSelectedVideo(null)
+    setSelectedVideo(null);
     if (!videoRef.current) return;
 
     const video = videoRef.current;
@@ -154,9 +177,12 @@ function VideoCard({video, onClick, setSelectedVideo, }: { video: CloudinaryVide
         preload="metadata"
         onClick={onClick}
       />
-      
-      <div className="absolute bottom-2 right-2 text-white text-sm bg-black/60 px-2 py-1 rounded" onClick={toggleAudio}>
-        {isAudioOn ? '🔊' : '🔇'}
+
+      <div
+        className="absolute bottom-2 right-2 text-white text-sm bg-black/60 px-2 py-1 rounded"
+        onClick={toggleAudio}
+      >
+        {isAudioOn ? "🔊" : "🔇"}
       </div>
     </motion.div>
   );
@@ -206,7 +232,6 @@ function VideoCard({video, onClick, setSelectedVideo, }: { video: CloudinaryVide
 //     if (inView && cursor) fetchVideos(cursor);
 //   }, [inView, cursor]);
 
- 
 //   const toggleAudio = () => {
 //     if (videoRef.current) {
 //       const isPaused = videoRef.current.paused;
@@ -244,11 +269,9 @@ function VideoCard({video, onClick, setSelectedVideo, }: { video: CloudinaryVide
 //           transition={{ duration: 0.4, ease: 'easeOut' }}
 //           onClick={toggleAudio}
 //         />
-    
-//       </> 
-//       ))}
 
-      
+//       </>
+//       ))}
 
 //       {loading && Array.from({ length: 3 }).map((_, i) => (
 //         <div
@@ -267,8 +290,7 @@ function VideoCard({video, onClick, setSelectedVideo, }: { video: CloudinaryVide
 //         </p>
 //       )}
 //     </motion.div>
-   
-    
+
 //     </>
 //   );
 // }
