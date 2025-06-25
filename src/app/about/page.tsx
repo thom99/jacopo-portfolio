@@ -13,7 +13,7 @@ export default function About() {
           className="rounded-xl shadow-lg object-cover mx-auto"
         />
         <h1 className="text-4xl font-bold mb-4">Su di me</h1>
-        <p className="text-lg leading-relaxed">
+        <p className="text-lg leading-relaxed text-neutral-600">
           Sono Jacopo, un fotografo italiano nato nel 1998, con sede nelle
           Marche, Italia. Scatto per ricordare ciò che altrimenti svanirebbe.
           Sono attratto dal silenzio dei luoghi, dalla spontaneità dei volti,
