@@ -5,6 +5,11 @@ import { Inter } from "next/font/google";
 import localFont from "next/font/local";
 import Navbar from "./components/Navbar";
 import ScrollToTopButton from "./components/ScrollToTopButton";
+import { Toaster } from "react-hot-toast";
+// import Footer from "./components/Footer";
+import { lazy } from "react";
+
+const Footer = lazy(() => import("./components/Footer"));
 
 const playfair = localFont({
   src: "./fonts/PlayfairDisplay-Regular.ttf",
@@ -27,14 +32,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`bg-[#fdfaf6] text-neutral-800 font-sans ${playfair.variable}`}
+        className={`bg-[#fdfaf6] text-neutral-800 font-sans ${playfair.variable} flex flex-col min-h-screen`}
         style={{ fontFamily: "var(--font-serif)" }}
       >
         <Navbar />
-        <main className="pt-24 px-6 pb-12 max-w-5xl mx-auto min-h-screen">
+        <main className="pt-24 px-6 pb-12 max-w-5xl mx-auto flex-grow">
           {children}
           <ScrollToTopButton />
         </main>
+        <Toaster position="top-center" reverseOrder={false} />
+        <Footer />
       </body>
     </html>
   );

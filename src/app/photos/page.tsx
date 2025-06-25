@@ -1,54 +1,58 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import { useInView } from "react-intersection-observer";
 import { AnimatePresence, motion } from "framer-motion";
 import { useModalStore } from "@/stores/modalStore";
 import { useLockBodyScroll } from "@/hooks/useLayoutEffect";
+import toast from "react-hot-toast";
 
 type CloudinaryImage = {
   public_id: string;
   secure_url: string;
 };
 
-type CloudinaryResponse = {
-  success: boolean;
-  resources: CloudinaryImage[];
-  nextCursor: string | null;
-};
-
 export default function PhotosPage() {
-  const { ref, inView } = useInView({ triggerOnce: false, threshold: 0.5 });
+  const { inView } = useInView({ triggerOnce: false, threshold: 0.5 });
   const { setImageModalOpen } = useModalStore();
+  const ref = React.useRef<HTMLDivElement>(null);
 
   const [selectedImage, setSelectedImage] = useState<CloudinaryImage | null>(
     null
   );
   const [images, setImages] = useState<any[]>([]);
   const [cursor, setCursor] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [allLoaded, setAllLoaded] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [allLoaded, setAllLoaded] = useState<boolean>(false);
 
   useLockBodyScroll(!!selectedImage);
 
   const fetchPhotos = async (cursorParam: string | null = null) => {
     if (loading || allLoaded) return;
     setLoading(true);
-    const query = cursorParam
-      ? `?resource_type=image&cursor=${cursorParam}`
-      : "?resource_type=image";
-    const res = await fetch(`/api/gallery${query}`);
-    const data = await res.json();
 
-    if (data.success) {
-      setImages((prev) => [...prev, ...data.resources]);
-      if (data.nextCursor) setCursor(data.nextCursor);
-      else {
-        setCursor(null);
-        setAllLoaded(true);
+    try {
+      const query = cursorParam
+        ? `?resource_type=image&cursor=${cursorParam}`
+        : `?resource_type=image`;
+      const res = await fetch(`/api/gallery${query}`);
+      const data = await res.json();
+      console.log({ data });
+
+      if (data.success) {
+        setImages((prev) => [...prev, ...data.resources]);
+        if (data.nextCursor) setCursor(data.nextCursor);
+        else {
+          setCursor(null);
+          setAllLoaded(true);
+        }
       }
+    } catch (error) {
+      toast.error(`Errore: "Caricamento fallito"}`);
+      console.error("Errore durante il fetch da Cloudinary:", error);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   useEffect(() => {

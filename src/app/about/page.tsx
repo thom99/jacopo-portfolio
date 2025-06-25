@@ -1,9 +1,6 @@
-import Navbar from "../components/Navbar";
-
 export default function About() {
   return (
     <>
-      {/* <Navbar /> */}
       <main className="max-w-4xl mx-auto p-6 text-black">
         <h1 className="text-4xl font-bold mb-4">Su di me</h1>
         <p className="text-lg leading-relaxed">

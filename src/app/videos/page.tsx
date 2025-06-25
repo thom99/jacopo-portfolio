@@ -3,6 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useLockBodyScroll } from "@/hooks/useLayoutEffect";
+import toast from "react-hot-toast";
 
 type CloudinaryVideo = {
   public_id: string;
@@ -21,22 +22,29 @@ export default function VideoGallery() {
   );
   const [videos, setVideos] = useState<CloudinaryVideo[]>([]);
   const [cursor, setCursor] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useLockBodyScroll(!!selectedVideo);
 
   const fetchVideos = async (cursorParam: string | null = null) => {
     setLoading(true);
-    const query = cursorParam
-      ? `?resource_type=video&cursor=${cursorParam}`
-      : `?resource_type=video`;
-    const res = await fetch(`/api/gallery${query}`);
-    const data: CloudinaryResponse = await res.json();
-    if (data.success) {
-      setVideos((prev) => [...prev, ...data.resources]);
-      setCursor(data.nextCursor);
+
+    try {
+      const query = cursorParam
+        ? `?resource_type=video&cursor=${cursorParam}`
+        : `?resource_type=video`;
+      const res = await fetch(`/api/gallery${query}`);
+      const data: CloudinaryResponse = await res.json();
+      if (data.success) {
+        setVideos((prev) => [...prev, ...data.resources]);
+        setCursor(data.nextCursor);
+      }
+    } catch (error) {
+      toast.error(`Errore: "Caricamento fallito"}`);
+      console.error("Errore durante il fetch da Cloudinary:", error);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   useEffect(() => {
