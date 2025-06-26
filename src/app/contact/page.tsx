@@ -29,6 +29,7 @@ export default function ContactPage() {
         if (data.ok || data.success) {
           toast.success("Messaggio inviato! ✉️");
           form.reset();
+          setSubmitted(true);
         } else {
           toast.error("Errore durante l'invio. Riprova più tardi.");
         }
