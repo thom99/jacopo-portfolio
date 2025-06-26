@@ -4,7 +4,7 @@ import JacopoImg from "../images/Jacopo.jpeg";
 export default function About() {
   return (
     <>
-      <main className="max-w-4xl mx-auto p-6 text-black">
+      <main className="pt-24 pb-12 max-w-4xl mx-auto p-6 text-black">
         <Image
           src={JacopoImg}
           alt="Jacopo"

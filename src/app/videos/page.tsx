@@ -54,7 +54,7 @@ export default function VideoGallery() {
   return (
     <>
       <motion.div
-        className="columns-1 sm:columns-2 lg:columns-3 gap-4"
+        className="pt-24 pb-12 columns-1 sm:columns-2 lg:columns-3 gap-4"
         initial="hidden"
         animate="visible"
         variants={{

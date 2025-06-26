@@ -3,13 +3,10 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import localFont from "next/font/local";
-import Navbar from "./components/Navbar";
-import ScrollToTopButton from "./components/ScrollToTopButton";
+import Navbar from "../components/Navbar";
+import ScrollToTopButton from "../components/ScrollToTopButton";
 import { Toaster } from "react-hot-toast";
-// import Footer from "./components/Footer";
-import { lazy } from "react";
-
-const Footer = lazy(() => import("./components/Footer"));
+import Footer from "../components/Footer";
 
 const playfair = localFont({
   src: "./fonts/PlayfairDisplay-Regular.ttf",
@@ -36,7 +33,8 @@ export default function RootLayout({
         style={{ fontFamily: "var(--font-serif)" }}
       >
         <Navbar />
-        <main className="pt-24 px-6 pb-12 max-w-5xl mx-auto flex-grow">
+        {/* <main className="pt-24 px-6 pb-12 max-w-5xl mx-auto flex-1"> */}
+        <main className="px-6 max-w-5xl mx-auto flex-1">
           {children}
           <ScrollToTopButton />
         </main>

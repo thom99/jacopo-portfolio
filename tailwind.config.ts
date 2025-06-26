@@ -1,13 +1,13 @@
-import type { Config } from 'tailwindcss'
+import type { Config } from "tailwindcss";
 
 const config: Config = {
   content: [
-    "./app/**/*.{ts,tsx,js,jsx}",   // Se usi Next.js App Router nella cartella app/
+    "./app/**/*.{ts,tsx,js,jsx}", // Se usi Next.js App Router nella cartella app/
     "./components/**/*.{ts,tsx,js,jsx}",
   ],
   // theme: {
-//   extend: {},
-// },
+  //   extend: {},
+  // },
   // theme: {
   //   extend: {
   //     colors: {
@@ -20,20 +20,21 @@ const config: Config = {
   //     },
   //   },
   // },
-   theme: {
+  darkMode: "class",
+  theme: {
     extend: {
       colors: {
         cyan: {
-          300: '#67e8f9',
-          400: '#22d3ee',
+          300: "#67e8f9",
+          400: "#22d3ee",
         },
       },
       backgroundColor: {
-        black: '#000000',
+        black: "#000000",
       },
     },
   },
   plugins: [],
-}
+};
 
-export default config
+export default config;

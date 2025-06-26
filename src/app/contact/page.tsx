@@ -15,8 +15,6 @@ export default function ContactPage() {
     const form = e.currentTarget;
     const formData = new FormData(form);
 
-    //TODO => implementare formspree.io con account Jacopo
-
     fetch("https://formspree.io/f/mvgrvnoo", {
       method: "POST",
       body: formData,
@@ -44,7 +42,9 @@ export default function ContactPage() {
 
   return (
     <>
-      <main className="min-h-screen px-6 text-black ">
+      {/* <main className="min-h-screen px-6 text-black ">
+       */}
+      <main className="pt-24 pb-12 px-6 text-black flex items-center justify-center">
         <motion.section
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
