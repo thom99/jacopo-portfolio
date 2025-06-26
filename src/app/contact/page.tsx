@@ -17,7 +17,7 @@ export default function ContactPage() {
 
     //TODO => implementare formspree.io con account Jacopo
 
-    fetch("https://formspree.io/f/xyz123", {
+    fetch("https://formspree.io/f/mvgrvnoo", {
       method: "POST",
       body: formData,
       headers: {
