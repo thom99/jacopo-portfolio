@@ -34,7 +34,7 @@ export default function RootLayout({
       >
         <Navbar />
         {/* <main className="pt-24 px-6 pb-12 max-w-5xl mx-auto flex-1"> */}
-        <main className="px-6 max-w-5xl mx-auto flex-1">
+        <main className="px-6 max-w-5xl mx-auto flex-1 sm:max-w-3xl">
           {children}
           <ScrollToTopButton />
         </main>

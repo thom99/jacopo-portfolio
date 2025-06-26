@@ -5,6 +5,9 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useLockBodyScroll } from "@/hooks/useLayoutEffect";
 import toast from "react-hot-toast";
 
+function MyComponent() {
+  return;
+}
 type CloudinaryVideo = {
   public_id: string;
   secure_url: string;
@@ -112,6 +115,11 @@ export default function VideoGallery() {
           </div>
         )}
       </motion.div>
+      {videos?.length === 0 && (
+        <p className="col-span-full text-center text-gray-400 italic mt-4">
+          Nessun video trovato
+        </p>
+      )}
     </>
   );
 }

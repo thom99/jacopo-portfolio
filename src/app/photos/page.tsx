@@ -73,7 +73,7 @@ export default function PhotosPage() {
       <motion.div
         className={`${
           pathname !== "/"
-            ? "pt-24 pb-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+            ? "pt-24 pb-12 grid grid-cols-1 gap-4"
             : "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
         }`}
         initial="hidden"
@@ -137,11 +137,16 @@ export default function PhotosPage() {
           <div ref={ref} className="col-span-full h-10 mt-4" />
         )}
 
-        {allLoaded && (
+        {images?.length === 0 && (
+          <p className="col-span-full text-center text-gray-400 italic mt-4">
+            Nessuna foto trovata
+          </p>
+        )}
+        {/* {allLoaded && (
           <p className="col-span-full text-center text-gray-400 italic mt-4">
             ✅ Tutte le foto sono state caricate
           </p>
-        )}
+        )} */}
       </motion.div>
     </>
   );

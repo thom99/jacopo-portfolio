@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
 
   try {
     const result = await cloudinary.search
-      .expression(`resource_type:${resourceType}`)
+      .expression(`resource_type:${resourceType} AND folder:jacopo-photos`)
       .sort_by("created_at", "desc")
       .max_results(Number(maxResults))
       .next_cursor(cursor)
