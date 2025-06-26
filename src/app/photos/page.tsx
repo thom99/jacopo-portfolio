@@ -6,17 +6,18 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useModalStore } from "@/stores/modalStore";
 import { useLockBodyScroll } from "@/hooks/useLayoutEffect";
 import toast from "react-hot-toast";
+import { usePathname } from "next/navigation";
 
 type CloudinaryImage = {
   public_id: string;
   secure_url: string;
 };
 
-type Props = {
-  maxResults: string | undefined;
-};
+export default function PhotosPage() {
+  const pathname = usePathname();
 
-export default function PhotosPage({ maxResults }: Props) {
+  const maxResults = pathname === "/" && 6;
+
   const { inView } = useInView({ triggerOnce: false, threshold: 0.5 });
   const { setImageModalOpen } = useModalStore();
   const ref = React.useRef<HTMLDivElement>(null);
