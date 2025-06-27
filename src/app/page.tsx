@@ -128,7 +128,6 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
@@ -198,7 +197,7 @@ export default function Home() {
       </motion.div>
 
       <motion.div
-        className="mt-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"
+        className="mt-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true }}

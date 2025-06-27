@@ -93,11 +93,17 @@ export default function PhotosPage() {
 
   return (
     <>
+      {/* LOADING STATE */}
+      {loading && (
+        <div className="fixed inset-0 bg-white flex items-center justify-center z-50">
+          <div className="w-24 h-24 border-4 border-neutral-300 border-t-black rounded-full animate-spin" />
+        </div>
+      )}
       <motion.div
         className={`${
           pathname !== "/"
-            ? "pt-24 pb-12 grid grid-cols-1 gap-4"
-            : "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+            ? "pt-24 pb-12 grid grid-cols-1 gap-4 cursor-pointer"
+            : "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 cursor-pointer"
           //   "pt-24 pb-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
           // : "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
         }`}
@@ -117,7 +123,7 @@ export default function PhotosPage() {
             className="rounded-lg w-full shadow"
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
             onClick={() => {
               setSelectedImage(img);
               setImageModalOpen(true);
@@ -150,7 +156,7 @@ export default function PhotosPage() {
           )}
         </AnimatePresence>
 
-        {loading &&
+        {true &&
           Array.from({ length: 3 }).map((_, i) => (
             <div
               key={`skeleton-${i}`}

@@ -75,8 +75,16 @@ export default function VideoGallery() {
 
   return (
     <>
+      {/* LOADING STATE */}
+      {loading && (
+        <div className="fixed inset-0 bg-white flex items-center justify-center z-50">
+          <div className="w-24 h-24 border-4 border-neutral-300 border-t-black rounded-full animate-spin" />
+        </div>
+      )}
       <motion.div
-        className="pt-24 pb-12 columns-1 sm:columns-2 lg:columns-3 gap-4"
+        className={`pt-24 pb-12 columns-1 sm:columns-2 lg:columns-3 gap-4 ${
+          videos?.length !== 0 && "cursor-pointer"
+        }`}
         initial="hidden"
         animate="visible"
         variants={{
