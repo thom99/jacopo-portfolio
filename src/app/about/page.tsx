@@ -216,7 +216,7 @@ export default function About() {
       )}
 
       {image && (
-        <section className="relative h-[70vh] w-full overflow-hidden">
+        <section className="relative h-[70vh] sm:h-[120vh] w-full overflow-hidden">
           <motion.img
             initial={{ scale: 1.3, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
