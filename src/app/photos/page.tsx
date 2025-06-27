@@ -16,11 +16,10 @@ type CloudinaryImage = {
 export default function PhotosPage() {
   const pathname = usePathname();
 
-  const maxResults = pathname === "/" && 6;
+  // const maxResults = pathname === "/" && 6;
 
-  const { inView } = useInView({ triggerOnce: false, threshold: 0.5 });
+  const { ref, inView } = useInView({ triggerOnce: false, threshold: 0.5 });
   const { setImageModalOpen } = useModalStore();
-  const ref = React.useRef<HTMLDivElement>(null);
 
   const [selectedImage, setSelectedImage] = useState<CloudinaryImage | null>(
     null
@@ -38,22 +37,36 @@ export default function PhotosPage() {
 
     try {
       const query = cursorParam
-        ? `?resource_type=image&cursor=${cursorParam}&maxResults=${maxResults}`
-        : `?resource_type=image&maxResults=${maxResults}`;
-      //   `?resource_type=image&cursor=${cursorParam}`
-      // : `?resource_type=image`;
-      const res = await fetch(`/api/gallery${query}`);
+        ? // `?resource_type=image&cursor=${cursorParam}&maxResults=${maxResults}`
+          // : `?resource_type=image&maxResults=${maxResults}`;
+          `?resource_type=image&cursor=${cursorParam}&folder=jacopo-portfolio-photos`
+        : `?resource_type=image&folder=jacopo-portfolio-photos`;
+      const res = await fetch(`/api/photos${query}`);
       const data = await res.json();
       console.log({ data });
 
-      if (data.success) {
-        setImages((prev) => [...prev, ...data.resources]);
-        setAllLoaded(true);
-        if (data.nextCursor) setCursor(data.nextCursor);
-        else {
-          setCursor(null);
-        }
+      if (Array.isArray(data)) {
+        setImages((prev) => {
+          const all = [...prev, ...data];
+
+          const uniqueById = all.filter(
+            (item, index, self) =>
+              index === self.findIndex((t) => t.public_id === item.public_id)
+          );
+
+          return uniqueById;
+        });
+        if (!cursorParam || data.length === 0) setAllLoaded(true);
       }
+
+      // if (data.success) {
+      //   setImages((prev) => [...prev, ...data.resources]);
+      //   setAllLoaded(true);
+      //   if (data.nextCursor) setCursor(data.nextCursor);
+      //   else {
+      //     setCursor(null);
+      //   }
+      // }
     } catch (error) {
       toast.error(`Errore: "Caricamento fallito"}`);
       console.error("Errore durante il fetch da Cloudinary:", error);
@@ -61,6 +74,14 @@ export default function PhotosPage() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    const removeDuplicates = images.filter(
+      (item, index, self) =>
+        index === self.findIndex((t) => t.public_id === item.public_id)
+    );
+    console.log({ removeDuplicates });
+  }, [images]);
 
   useEffect(() => {
     fetchPhotos();

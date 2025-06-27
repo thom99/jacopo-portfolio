@@ -37,16 +37,30 @@ export default function VideoGallery() {
       const query = cursorParam
         ? `?resource_type=video&cursor=${cursorParam}`
         : `?resource_type=video`;
-      const res = await fetch(`/api/gallery${query}`);
+      const res = await fetch(`/api/videos${query}`);
       const data: CloudinaryResponse = await res.json();
 
-      if (data.success) {
-        setVideos((prev) => [...prev, ...data.resources]);
-        setAllLoaded(true);
-        if (data.nextCursor) setCursor(data.nextCursor);
-      } else {
-        setCursor(null);
+      if (Array.isArray(data)) {
+        setVideos((prev) => {
+          const all = [...prev, ...data];
+
+          const uniqueById = all.filter(
+            (item, index, self) =>
+              index === self.findIndex((t) => t.public_id === item.public_id)
+          );
+
+          return uniqueById;
+        });
+        if (!cursorParam || data.length === 0) setAllLoaded(true);
       }
+
+      // if (data.success) {
+      //   setVideos((prev) => [...prev, ...data.resources]);
+      //   setAllLoaded(true);
+      //   if (data.nextCursor) setCursor(data.nextCursor);
+      // } else {
+      //   setCursor(null);
+      // }
     } catch (error) {
       toast.error(`Errore: "Caricamento fallito"}`);
       console.error("Errore durante il fetch da Cloudinary:", error);
