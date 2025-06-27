@@ -26,6 +26,7 @@ export default function VideoGallery() {
   const [videos, setVideos] = useState<CloudinaryVideo[]>([]);
   const [cursor, setCursor] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [allLoaded, setAllLoaded] = useState<boolean>(false);
 
   useLockBodyScroll(!!selectedVideo);
 
@@ -38,9 +39,13 @@ export default function VideoGallery() {
         : `?resource_type=video`;
       const res = await fetch(`/api/gallery${query}`);
       const data: CloudinaryResponse = await res.json();
+
       if (data.success) {
         setVideos((prev) => [...prev, ...data.resources]);
-        setCursor(data.nextCursor);
+        setAllLoaded(true);
+        if (data.nextCursor) setCursor(data.nextCursor);
+      } else {
+        setCursor(null);
       }
     } catch (error) {
       toast.error(`Errore: "Caricamento fallito"}`);
@@ -115,7 +120,7 @@ export default function VideoGallery() {
           </div>
         )}
       </motion.div>
-      {videos?.length === 0 && (
+      {allLoaded && videos?.length === 0 && (
         <p className="col-span-full text-center text-gray-400 italic mt-4">
           Nessun video trovato
         </p>

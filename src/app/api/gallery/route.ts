@@ -9,8 +9,6 @@ export async function GET(request: NextRequest) {
 
   const maxResults = searchParams.get("maxResults") ?? "30";
 
-  console.log({ maxResults });
-
   try {
     const result = await cloudinary.search
       .expression(`resource_type:${resourceType} AND folder:jacopo-photos`)

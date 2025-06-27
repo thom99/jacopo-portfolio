@@ -40,16 +40,18 @@ export default function PhotosPage() {
       const query = cursorParam
         ? `?resource_type=image&cursor=${cursorParam}&maxResults=${maxResults}`
         : `?resource_type=image&maxResults=${maxResults}`;
+      //   `?resource_type=image&cursor=${cursorParam}`
+      // : `?resource_type=image`;
       const res = await fetch(`/api/gallery${query}`);
       const data = await res.json();
       console.log({ data });
 
       if (data.success) {
         setImages((prev) => [...prev, ...data.resources]);
+        setAllLoaded(true);
         if (data.nextCursor) setCursor(data.nextCursor);
         else {
           setCursor(null);
-          setAllLoaded(true);
         }
       }
     } catch (error) {
@@ -75,6 +77,8 @@ export default function PhotosPage() {
           pathname !== "/"
             ? "pt-24 pb-12 grid grid-cols-1 gap-4"
             : "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+          //   "pt-24 pb-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+          // : "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
         }`}
         initial="hidden"
         animate="visible"
@@ -89,7 +93,7 @@ export default function PhotosPage() {
             key={img.public_id}
             src={img.secure_url}
             alt="cloudinary image"
-            className="rounded-xl w-full shadow"
+            className="rounded-lg w-full shadow"
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.4, ease: "easeOut" }}
@@ -137,7 +141,7 @@ export default function PhotosPage() {
           <div ref={ref} className="col-span-full h-10 mt-4" />
         )}
 
-        {images?.length === 0 && (
+        {allLoaded && images?.length === 0 && (
           <p className="col-span-full text-center text-gray-400 italic mt-4">
             Nessuna foto trovata
           </p>
