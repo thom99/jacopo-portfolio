@@ -5,9 +5,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useLockBodyScroll } from "@/hooks/useLayoutEffect";
 import toast from "react-hot-toast";
 
-function MyComponent() {
-  return;
-}
 type CloudinaryVideo = {
   public_id: string;
   secure_url: string;
@@ -53,14 +50,6 @@ export default function VideoGallery() {
         });
         if (!cursorParam || data.length === 0) setAllLoaded(true);
       }
-
-      // if (data.success) {
-      //   setVideos((prev) => [...prev, ...data.resources]);
-      //   setAllLoaded(true);
-      //   if (data.nextCursor) setCursor(data.nextCursor);
-      // } else {
-      //   setCursor(null);
-      // }
     } catch (error) {
       toast.error(`Errore: "Caricamento fallito"}`);
       console.error("Errore durante il fetch da Cloudinary:", error);
@@ -75,7 +64,6 @@ export default function VideoGallery() {
 
   return (
     <>
-      {/* LOADING STATE */}
       {loading && (
         <div className="fixed inset-0 bg-white flex items-center justify-center z-50">
           <div className="w-24 h-24 border-4 border-neutral-300 border-t-black rounded-full animate-spin" />
@@ -193,7 +181,6 @@ function VideoCard({
       {!loaded && (
         <motion.video
           src={thumbnailUrl}
-          // alt="Video thumbnail"
           className="absolute w-full h-full object-cover z-10"
           initial={{ opacity: 1 }}
           animate={{ opacity: 0 }}
@@ -222,110 +209,3 @@ function VideoCard({
     </motion.div>
   );
 }
-
-// 'use client';
-
-// import { useEffect, useRef, useState } from 'react';
-// import { useInView } from 'react-intersection-observer';
-// import { motion } from 'framer-motion';
-// import Navbar from '../components/Navbar';
-
-// export default function VideosPage() {
-//   const videoRef = useRef<HTMLVideoElement | null>(null);
-
-//   const [videos, setVideos] = useState<any[]>([]);
-//   const [cursor, setCursor] = useState<string | null>(null);
-//   const [loading, setLoading] = useState(false);
-//   const [allLoaded, setAllLoaded] = useState(false);
-//   const { ref, inView } = useInView({ triggerOnce: false, threshold: 0.5 });
-//   const [loaded, setLoaded] = useState(false);
-//   const [isAudioOn, setIsAudioOn] = useState(false);
-
-//   const fetchVideos = async (cursorParam: string | null = null) => {
-//     if (loading || allLoaded) return;
-//     setLoading(true);
-//     const query = cursorParam ? `?resource_type=video&cursor=${cursorParam}` : '?resource_type=video';
-//     const res = await fetch(`/api/gallery${query}`);
-//     const data = await res.json();
-
-//     if (data.success) {
-//       setVideos(prev => [...prev, ...data.resources]);
-//       if (data.nextCursor) setCursor(data.nextCursor);
-//       else {
-//         setCursor(null);
-//         setAllLoaded(true);
-//       }
-//     }
-//     setLoading(false);
-//   };
-
-//   useEffect(() => {
-//     fetchVideos();
-//   }, []);
-
-//   useEffect(() => {
-//     if (inView && cursor) fetchVideos(cursor);
-//   }, [inView, cursor]);
-
-//   const toggleAudio = () => {
-//     if (videoRef.current) {
-//       const isPaused = videoRef.current.paused;
-//       videoRef.current.muted = isAudioOn;
-//       setIsAudioOn(!isAudioOn);
-//       if (isPaused) videoRef.current.play();
-//       else videoRef.current.pause();
-//     }
-//   };
-
-//   return (
-//      <>
-//     <motion.div
-//       className="p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
-//       initial="hidden"
-//       animate="visible"
-//       variants={{
-//         hidden: {},
-//         visible: { transition: { staggerChildren: 0.1 } },
-//       }}
-//       onClick={toggleAudio}
-//     >
-//       {videos.map(video => (
-//       <> <motion.video
-//           key={video.public_id}
-//           src={video.secure_url}
-//           className="rounded-xl w-full shadow"
-//           autoPlay
-//           muted
-//           loop
-//           playsInline
-//           preload="metadata"
-//           initial={{ opacity: 0, scale: 0.95 }}
-//           animate={{ opacity: 1, scale: 1 }}
-//           transition={{ duration: 0.4, ease: 'easeOut' }}
-//           onClick={toggleAudio}
-//         />
-
-//       </>
-//       ))}
-
-//       {loading && Array.from({ length: 3 }).map((_, i) => (
-//         <div
-//           key={`skeleton-${i}`}
-//           className="rounded-xl h-64 w-full bg-neutral-200 animate-pulse"
-//         />
-//       ))}
-
-//       {!allLoaded && !loading && (
-//         <div ref={ref} className="col-span-full h-10 mt-4" />
-//       )}
-
-//       {allLoaded && (
-//         <p className="col-span-full text-center text-gray-400 italic mt-4">
-//           ✅ Tutti i video sono stati caricati
-//         </p>
-//       )}
-//     </motion.div>
-
-//     </>
-//   );
-// }

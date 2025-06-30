@@ -42,8 +42,6 @@ export default function ContactPage() {
 
   return (
     <>
-      {/* <main className="min-h-screen px-6 text-black ">
-       */}
       <main className="pt-24 pb-12 px-6 text-black flex items-center justify-center">
         <motion.section
           initial={{ opacity: 0, y: 20 }}

@@ -1,7 +1,5 @@
-// layout.tsx - Root layout con stile fotografico
 import "./globals.css";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import localFont from "next/font/local";
 import Navbar from "../components/Navbar";
 import ScrollToTopButton from "../components/ScrollToTopButton";
@@ -13,8 +11,6 @@ const playfair = localFont({
   display: "swap",
   variable: "--font-serif",
 });
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "J.S. Studio - Portfolio",
@@ -33,7 +29,6 @@ export default function RootLayout({
         style={{ fontFamily: "var(--font-serif)" }}
       >
         <Navbar />
-        {/* <main className="pt-24 px-6 pb-12 max-w-5xl mx-auto flex-1"> */}
         <main className="px-6 max-w-5xl mx-auto flex-1 sm:max-w-3xl">
           {children}
           <ScrollToTopButton />

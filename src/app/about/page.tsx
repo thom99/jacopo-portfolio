@@ -313,30 +313,15 @@ Perché la fotografia, per me, è libertà.`}
             className="leading-relaxed"
           >
             <h2 className="text-xl sm:text-2xl font-semibold mb-4 border-b-2 border-amber-400 inline-block pb-1">
-              Cosa mi ispira
-            </h2>
-            <ul className="list-disc pl-6 space-y-2 text-sm sm:text-base">
-              <li>La luce del tramonto sulla costa Adriatica</li>
-              <li>Il cinema di Paolo Sorrentino e Wong Kar-Wai</li>
-              <li>I suoni ambientali e la musica minimal</li>
-              <li>Le passeggiate nei borghi abbandonati</li>
-              <li>Le persone vere, nelle loro imperfezioni</li>
-            </ul>
-          </motion.section>
-
-          <motion.section
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="leading-relaxed"
-          >
-            <h2 className="text-xl sm:text-2xl font-semibold mb-4 border-b-2 border-amber-400 inline-block pb-1">
               Oltre la fotografia
             </h2>
             <p className="text-sm sm:text-base">
-              Quando non scatto, mi trovi a leggere romanzi italiani
-              contemporanei, a fare trekking in mezzo al nulla o a preparare
-              caffè filtro ascoltando ambient techno.
+              Nel mio tempo libero mi piace rilassarmi leggendo. Faccio sport a
+              livello agonistico ed è l'altra mia passione, insieme alla
+              fotografia. Sono anche un amante del cinema e di tutto ciò che si
+              cela dietro la realizzazione di una pellicola. Camminare in
+              montagna è un altro hobby che coltivo, e trovo che doni all'essere
+              umano un senso di libertà ineguagliabile.
             </p>
           </motion.section>
         </motion.div>

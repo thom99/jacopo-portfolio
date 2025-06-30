@@ -156,7 +156,7 @@ export default function PhotosPage() {
           )}
         </AnimatePresence>
 
-        {true &&
+        {loading &&
           Array.from({ length: 3 }).map((_, i) => (
             <div
               key={`skeleton-${i}`}
